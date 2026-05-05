@@ -1,0 +1,30 @@
+# Guide de téléchargement des documents
+
+Pour que tous les boutons de téléchargement de ton portfolio fonctionnent (Projets et TPs), tu dois placer tes fichiers PDF dans le dossier `/public/documents/` de ton projet avec EXACTEMENT les noms suivants :
+
+--- PROJET ---
+- Projet_NextCloud.pdf
+
+--- TRAVAUX PRATIQUES (TPs) ---
+- TD01_VLSM.pdf
+- VLSM_Avance_Expert.pdf
+- TD_Videosurveillance.pdf
+- TP_Diagnostic_Reseau.pdf
+- Commandes_CMD_Support.pdf
+- TP_Creation_Tables_SQL.pdf
+- TP_SQL_Boutique.pdf
+- TP_Explorateur_CMD.pdf
+- Lab_IoT_Maison_Intelligente.pdf
+- Linux_Bash_TP1.pdf
+- Install_Config_Ubuntu.pdf
+- Environnement_Travail_Linux.pdf
+- Addons_Invites_VirtualBox.pdf
+- Outils_Securite_Essentiels.pdf
+- Install_Serveur_Web_Complet.pdf
+- Serveur_Web_Securise_HTTPS.pdf
+
+--- AUTRES ---
+- CV_Alexandre_Marquant.pdf
+- Lettre_Motivation.pdf
+
+Une fois que tu auras mis tes fichiers avec ces noms dans le dossier 'documents', tous les liens de téléchargement "PDF" du site marcheront directement.

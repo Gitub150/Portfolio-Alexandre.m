@@ -340,8 +340,8 @@ export default function App() {
           animate={{ opacity: 1, scale: 1 }}
           className="mb-8 p-1 rounded-full bg-neutral-200"
         >
-          <div className="w-32 h-32 rounded-full overflow-hidden bg-neutral-300 flex items-center justify-center">
-             <User size={64} className="text-neutral-500" />
+          <div className="w-32 h-32 rounded-full overflow-hidden bg-neutral-300 flex items-center justify-center border-4 border-white shadow-inner">
+             <img src={getDocPath("images/profile.jpg")} alt="Alexandre Marquant" className="w-full h-full object-cover" />
           </div>
         </motion.div>
         

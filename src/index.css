@@ -7,25 +7,106 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #020617; /* slate-950 */
 }
 
 body {
-  background-color: #f8fafc; /* bg-neutral-50 */
-  color: #171717; /* text-neutral-900 */
+  background-color: #020617;
+  color: #94a3b8; /* slate-400 */
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom Scrollbar for Cyber-Sleek Premium Theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b; /* slate-800 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8; /* sky-400 */
+}
+
+/* --- CYBER-SLEEK PREMIUM ARCHITECTURE --- */
+
+/* 1. Glassmorphism Ultra-Sleek */
 .glass {
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(2, 6, 23, 0.4); /* slate-950/40 */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05); /* very subtle white border */
+}
+
+.glass-premium {
+  background-color: rgba(15, 23, 42, 0.3); /* slate-900/30 */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.03); 
+  transition: all 0.3s ease;
+}
+
+.glass-premium:hover {
+  border: 1px solid rgba(56, 189, 248, 0.3); /* sky-400/30 */
+  box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.05), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Cursor Spot Glow (Hardware Accelerated) */
+.cursor-spot-glow {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(56, 189, 248, 0.06), /* sky-400/6 */
+    transparent 40%
+  );
+}
+
+/* 3. Subtle Sleek Grid */
+.sleek-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
+}
+
+/* 4. Hardware Accelerated Animations */
+.hw-accelerated {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.sleek-hover {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, border-color, opacity, box-shadow;
+}
+
+.sleek-hover:hover {
+  transform: translateY(-2px);
+}
+
+/* Hide scrollbar util */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .section-padding {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   max-width: 80rem;

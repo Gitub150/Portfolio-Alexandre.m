@@ -31,8 +31,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection 
             }}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 text-sm font-sans font-medium whitespace-nowrap hw-accelerated ${
               activeSection === item.id 
-                ? 'bg-slate-800/80 border border-white/10 text-white shadow-[0_0_15px_rgba(56,189,248,0.15)] scale-105' 
-                : 'hover:bg-white/5 text-slate-400 hover:text-white'
+                ? 'bg-primary/10 border border-primary/30 text-primary scale-105' 
+                : 'hover:bg-primary/10 text-slate-300 hover:text-slate-50'
             }`}
           >
             {item.icon}

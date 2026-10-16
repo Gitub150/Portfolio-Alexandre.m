@@ -12,8 +12,8 @@ const VeilleSection = lazy(() => import('./components/sections/VeilleSection').t
 const ContactSection = lazy(() => import('./components/sections/ContactSection').then(m => ({ default: m.ContactSection })));
 
 const LoadingFallback = () => (
-  <div className="h-screen flex items-center justify-center bg-[#020617]">
-    <div className="w-12 h-12 border-2 border-slate-800 border-t-[#38bdf8] rounded-full animate-spin"></div>
+  <div className="h-screen flex items-center justify-center bg-ink">
+    <div className="w-12 h-12 border-2 border-slate-800 border-t-primary rounded-full animate-spin"></div>
   </div>
 );
 
@@ -57,7 +57,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#020617] relative overflow-hidden">
+    <div className="min-h-screen bg-ink ambient-bg relative overflow-hidden">
       {/* Background Cyber-Sleek Layer */}
       <div className="cursor-spot-glow pointer-events-none fixed inset-0 z-0"></div>
       <div className="sleek-grid pointer-events-none fixed inset-0 z-0 opacity-40"></div>

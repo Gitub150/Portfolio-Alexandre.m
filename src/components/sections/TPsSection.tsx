@@ -1,63 +1,168 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Terminal, 
-  Network, 
-  Download, 
-  ExternalLink, 
-  FileText, 
-  CheckCircle2, 
-  Clock, 
-  Sparkles, 
+import {
+  Terminal,
+  Network,
+  Download,
+  ExternalLink,
+  Clock,
   Search,
-  ShieldCheck,
-  Filter
+  Server,
+  Monitor,
+  Layers,
+  ChevronDown,
+  LayoutGrid,
+  FileText,
 } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Card } from '../ui/Card';
 import { tps, Project } from '../../data/portfolio';
 import { motion, AnimatePresence } from 'motion/react';
 
-type CategoryFilter = 'all' | 'cisco' | 'linux' | 'support';
+type Theme = NonNullable<Project['category']>;
+type ThemeFilter = 'all' | Theme;
+type YearFilter = 'all' | 1 | 2;
 
-const categories = [
-  { id: 'all' as CategoryFilter, label: 'Tous les TPs', icon: Filter },
-  { id: 'cisco' as CategoryFilter, label: 'Réseau / Cisco', icon: Network },
-  { id: 'linux' as CategoryFilter, label: 'Systèmes / Linux', icon: Terminal },
-  { id: 'support' as CategoryFilter, label: 'Support & Services', icon: ShieldCheck },
+// Thèmes dans l'ordre d'affichage, avec leur couleur de badge
+const themes: { id: Theme; label: string; description: string; icon: React.ElementType; tone: string }[] = [
+  { id: 'reseau', label: 'Réseau / Cisco', description: 'Adressage IP, VLAN, routage et sécurisation des équipements', icon: Network, tone: 'text-sky-700 bg-sky-50 border-sky-200' },
+  { id: 'linux', label: 'Systèmes / Linux', description: 'Ligne de commande, utilisateurs, droits et scripts Bash', icon: Terminal, tone: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
+  { id: 'virtualisation', label: 'Virtualisation', description: 'Hyperviseurs et machines virtuelles', icon: Server, tone: 'text-amber-700 bg-amber-50 border-amber-200' },
+  { id: 'windows', label: 'Windows & Dépannage', description: 'CMD, PowerShell et diagnostic des postes', icon: Monitor, tone: 'text-indigo-700 bg-indigo-50 border-indigo-200' },
+  { id: 'services', label: 'Services & Gestion de projet', description: 'Services web, sauvegardes, haute disponibilité et planification', icon: Layers, tone: 'text-violet-700 bg-violet-50 border-violet-200' },
 ];
 
+const themeOf = (id?: Theme) => themes.find(t => t.id === id) ?? themes[0];
+
+const matchesQuery = (tp: Project, query: string) => {
+  if (!query) return true;
+  const fields = [tp.title, tp.subtitle, tp.description, ...tp.technologies, ...(tp.tags ?? []), ...(tp.notions ?? [])];
+  return fields.some(f => f?.toLowerCase().includes(query));
+};
+
+const TPCard: React.FC<{ tp: Project }> = ({ tp }) => {
+  const theme = themeOf(tp.category);
+  const Icon = theme.icon;
+  const extraTechs = tp.technologies.length - 4;
+
+  return (
+    <Card className="flex flex-col h-full group">
+      {/* Thème & année */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border ${theme.tone}`}>
+          <Icon size={12} />
+          {theme.label}
+        </span>
+        {tp.year === 2 ? (
+          <span className="px-2.5 py-1 rounded-md text-[11px] font-medium text-white bg-primary">2ᵉ année</span>
+        ) : (
+          <span className="px-2.5 py-1 rounded-md text-[11px] font-medium text-slate-500 bg-slate-900 border border-slate-800">1ʳᵉ année</span>
+        )}
+      </div>
+
+      {/* Titre */}
+      <h3 className="font-semibold text-slate-100 text-base leading-snug font-sans">{tp.title}</h3>
+      {tp.subtitle && <p className="text-xs text-primary mt-1">{tp.subtitle}</p>}
+
+      <p className="text-slate-400 text-sm leading-relaxed mt-3 line-clamp-3">{tp.description}</p>
+
+      {/* Infos pratiques */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4 text-xs text-slate-500">
+        {tp.duration && (
+          <span className="flex items-center gap-1"><Clock size={12} /> {tp.duration}</span>
+        )}
+        {tp.fileSize && (
+          <span className="flex items-center gap-1"><FileText size={12} /> PDF · {tp.fileSize}</span>
+        )}
+      </div>
+
+      {/* Technologies */}
+      <div className="flex flex-wrap gap-1.5 mt-4">
+        {tp.technologies.slice(0, 4).map(tech => (
+          <span key={tech} className="bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded text-[11px] font-mono">
+            {tech}
+          </span>
+        ))}
+        {extraTechs > 0 && (
+          <span className="text-slate-500 px-1 py-0.5 text-[11px] font-mono" title={tp.technologies.slice(4).join(', ')}>
+            +{extraTechs}
+          </span>
+        )}
+      </div>
+
+      {/* Notions clés (dépliables) */}
+      {tp.notions && tp.notions.length > 0 && (
+        <details className="mt-4 group/notions">
+          <summary className="flex items-center gap-1.5 cursor-pointer select-none text-xs font-medium text-slate-300 hover:text-primary list-none [&::-webkit-details-marker]:hidden">
+            <ChevronDown size={14} className="transition-transform group-open/notions:rotate-180" />
+            Notions clés ({tp.notions.length})
+          </summary>
+          <ul className="mt-3 space-y-2 text-xs text-slate-400 border-l-2 border-primary/20 pl-3">
+            {tp.notions.map((notion, idx) => (
+              <li key={idx}>{notion}</li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      {/* Actions */}
+      {tp.downloadUrl && (
+        <div className="mt-auto pt-5 flex items-center gap-2">
+          <a
+            href={tp.downloadUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 border border-slate-700 hover:border-primary/50 hover:text-primary transition-colors"
+            title="Ouvrir le PDF dans un nouvel onglet"
+          >
+            <ExternalLink size={14} /> Aperçu
+          </a>
+          <a
+            href={tp.downloadUrl}
+            download={tp.fileName || true}
+            className="flex-1 btn-gradient inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium"
+            title={`Télécharger ${tp.fileName || 'le PDF'}`}
+          >
+            <Download size={14} /> Télécharger
+          </a>
+        </div>
+      )}
+    </Card>
+  );
+};
+
 export const TPsSection: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
+  const [activeTheme, setActiveTheme] = useState<ThemeFilter>('all');
+  const [activeYear, setActiveYear] = useState<YearFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Filtrage des TPs selon la catégorie et la recherche
-  const filteredTps = useMemo(() => {
-    return tps.filter((tp) => {
-      const matchesCategory = activeCategory === 'all' || tp.category === activeCategory;
-      const query = searchQuery.trim().toLowerCase();
-      
-      if (!query) return matchesCategory;
+  const query = searchQuery.trim().toLowerCase();
 
-      const matchesSearch = 
-        tp.title.toLowerCase().includes(query) ||
-        (tp.subtitle && tp.subtitle.toLowerCase().includes(query)) ||
-        tp.description.toLowerCase().includes(query) ||
-        tp.technologies.some(t => t.toLowerCase().includes(query)) ||
-        (tp.notions && tp.notions.some(n => n.toLowerCase().includes(query)));
+  // TP filtrés par année et recherche (le thème sert ensuite à grouper)
+  const filtered = useMemo(
+    () => tps.filter(tp => (activeYear === 'all' || tp.year === activeYear) && matchesQuery(tp, query)),
+    [activeYear, query]
+  );
 
-      return matchesCategory && matchesSearch;
-    });
-  }, [activeCategory, searchQuery]);
+  // Groupes par thème : 2e année d'abord, puis ordre du fichier de données
+  const groups = useMemo(
+    () =>
+      themes
+        .filter(theme => activeTheme === 'all' || theme.id === activeTheme)
+        .map(theme => ({
+          theme,
+          items: filtered
+            .filter(tp => tp.category === theme.id)
+            .sort((a, b) => (b.year ?? 1) - (a.year ?? 1)),
+        }))
+        .filter(group => group.items.length > 0),
+    [filtered, activeTheme]
+  );
 
-  // Comptages par catégorie
-  const counts = useMemo(() => {
-    return {
-      all: tps.length,
-      cisco: tps.filter(t => t.category === 'cisco').length,
-      linux: tps.filter(t => t.category === 'linux').length,
-      support: tps.filter(t => t.category === 'support').length,
-    };
-  }, []);
+  const countFor = (theme: ThemeFilter) =>
+    theme === 'all' ? filtered.length : filtered.filter(tp => tp.category === theme).length;
+
+  const total = groups.reduce((sum, g) => sum + g.items.length, 0);
+  const resetFilters = () => { setActiveTheme('all'); setActiveYear('all'); setSearchQuery(''); };
 
   return (
     <section id="tps" className="section-padding relative z-10">
@@ -65,276 +170,117 @@ export const TPsSection: React.FC = () => {
         Travaux Pratiques & Projets Réalisés
       </SectionHeading>
 
-      {/* Barre d'outils : Filtres par Catégorie & Recherche */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-8">
-        {/* Onglets des catégories */}
-        <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = activeCategory === cat.id;
+      {/* Barre d'outils */}
+      <div className="space-y-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* Année */}
+          <div className="inline-flex p-1 rounded-xl bg-slate-950 border border-slate-800 self-start">
+            {([['all', 'Toutes les années'], [2, '2ᵉ année'], [1, '1ʳᵉ année']] as [YearFilter, string][]).map(([year, label]) => (
+              <button
+                key={String(year)}
+                onClick={() => setActiveYear(year)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  activeYear === year ? 'bg-primary text-white' : 'text-slate-400 hover:text-slate-100'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Recherche */}
+          <div className="relative w-full md:max-w-xs">
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Rechercher une notion, une techno..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-8 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/15 transition-all font-sans"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-500 hover:text-slate-200"
+                aria-label="Effacer la recherche"
+              >
+                ×
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Thèmes */}
+        <div className="flex flex-wrap gap-2">
+          {[{ id: 'all' as ThemeFilter, label: 'Tous les thèmes', icon: LayoutGrid }, ...themes].map(theme => {
+            const Icon = theme.icon;
+            const isActive = activeTheme === theme.id;
             return (
               <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 ${
+                key={theme.id}
+                onClick={() => setActiveTheme(theme.id)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium border transition-colors ${
                   isActive
-                    ? 'bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/40 shadow-[0_0_15px_rgba(56,189,248,0.15)] font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent'
+                    ? 'bg-primary/10 text-primary border-primary/40'
+                    : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-100 hover:border-slate-700'
                 }`}
               >
                 <Icon size={15} />
-                <span>{cat.label}</span>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
-                  isActive ? 'bg-[#38bdf8]/20 text-[#38bdf8]' : 'bg-slate-800 text-slate-400'
-                }`}>
-                  {counts[cat.id]}
+                <span>{theme.label}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${isActive ? 'bg-primary/15' : 'bg-slate-900'}`}>
+                  {countFor(theme.id)}
                 </span>
               </button>
             );
           })}
         </div>
-
-        {/* Champ de recherche */}
-        <div className="relative min-w-[240px] max-w-sm">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input
-            type="text"
-            placeholder="Rechercher notion, techno..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-900/60 border border-slate-800/80 rounded-xl text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#38bdf8]/50 focus:ring-1 focus:ring-[#38bdf8]/50 transition-all font-sans"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-slate-300 font-mono"
-            >
-              ×
-            </button>
-          )}
-        </div>
       </div>
 
-      {/* Grille des TPs */}
-      {filteredTps.length === 0 ? (
-        <div className="text-center py-16 px-4 bg-slate-950/30 rounded-2xl border border-slate-800/40">
-          <p className="text-slate-400 text-sm">Aucun TP ne correspond à votre recherche "{searchQuery}".</p>
+      {/* TP groupés par thème */}
+      {total === 0 ? (
+        <div className="text-center py-16 px-4 bg-slate-950 rounded-2xl border border-slate-800">
+          <p className="text-slate-400 text-sm">Aucun TP ne correspond à ces filtres{searchQuery && ` (« ${searchQuery} »)`}.</p>
           <button
-            onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-            className="mt-4 px-4 py-2 text-xs font-mono text-[#38bdf8] bg-[#38bdf8]/10 hover:bg-[#38bdf8]/20 rounded-lg transition-colors border border-[#38bdf8]/30"
+            onClick={resetFilters}
+            className="mt-4 px-4 py-2 text-xs font-medium text-primary bg-primary/10 hover:bg-primary/15 rounded-lg transition-colors border border-primary/30"
           >
             Réinitialiser les filtres
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredTps.map((tp) => (
-              <motion.div
-                key={tp.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25 }}
-                className={tp.featured ? "md:col-span-2 lg:col-span-3" : "h-full"}
-              >
-                {tp.featured ? (
-                  /* CARTE SPECIALE EN VEDETTE : LAB MAJEUR (Cisco ou Linux) */
-                  <Card className="flex flex-col h-full group border-[#38bdf8]/25 hover:border-[#38bdf8]/60 bg-gradient-to-br from-slate-900/60 via-slate-950/70 to-slate-900/40 relative overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
-                    {/* Badge d'en-tête et catégorie */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                      <div className="flex items-center gap-2">
-                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-medium border ${
-                          tp.category === 'cisco' 
-                            ? 'bg-sky-500/10 text-sky-400 border-sky-500/30' 
-                            : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                        }`}>
-                          {tp.category === 'cisco' ? <Network size={14} /> : <Terminal size={14} />}
-                          {tp.categoryLabel}
-                        </span>
-
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-amber-400/10 text-amber-300 border border-amber-400/20">
-                          <Sparkles size={12} />
-                          Lab Certifié SISR
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
-                        {tp.level && (
-                          <span className="text-slate-400 bg-slate-800/60 px-2.5 py-0.5 rounded-md border border-slate-700/50">
-                            {tp.level}
-                          </span>
-                        )}
-                        {tp.duration && (
-                          <span className="flex items-center gap-1 text-slate-400">
-                            <Clock size={13} className="text-[#38bdf8]" />
-                            {tp.duration}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Titre & Sous-titre */}
-                    <div className="mb-4">
-                      <h3 className="text-xl sm:text-2xl font-bold text-slate-100 group-hover:text-white transition-colors font-sans">
-                        {tp.title}
-                      </h3>
-                      {tp.subtitle && (
-                        <p className="text-sm font-mono text-[#38bdf8]/90 mt-1">
-                          ↳ {tp.subtitle}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-slate-300 text-sm leading-relaxed mb-5 font-light">
-                      {tp.description}
-                    </p>
-
-                    {/* Compétences & Notions abordées */}
-                    {tp.notions && tp.notions.length > 0 && (
-                      <div className="mb-6 p-4 rounded-xl bg-slate-950/60 border border-slate-800/60">
-                        <div className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                          <CheckCircle2 size={14} className="text-[#38bdf8]" />
-                          Notions et compétences clés abordées :
-                        </div>
-                        <ul className="grid sm:grid-cols-2 gap-2 text-xs text-slate-300">
-                          {tp.notions.map((notion, idx) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <span className="text-[#38bdf8] font-mono shrink-0 mt-0.5">▸</span>
-                              <span>{notion}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Footer : Technologies & Boutons d'actions */}
-                    <div className="mt-auto pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-800/60">
-                      {/* Technologies */}
-                      <div className="flex flex-wrap gap-1.5">
-                        {tp.technologies.map((tech) => (
-                          <span
-                            key={tech}
-                            className="bg-slate-900/80 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-md text-[11px] font-mono"
-                          >
-                            #{tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Actions : Visualiser et Télécharger */}
-                      <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
-                        {tp.downloadUrl && (
-                          <a
-                            href={tp.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 bg-slate-900/80 hover:bg-slate-800 border border-slate-700/60 hover:border-slate-500 transition-all font-sans"
-                            title="Ouvrir le document PDF dans un nouvel onglet"
-                          >
-                            <ExternalLink size={14} />
-                            <span>Aperçu</span>
-                          </a>
-                        )}
-
-                        {tp.downloadUrl && (
-                          <a
-                            href={tp.downloadUrl}
-                            download={tp.fileName || true}
-                            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-950 bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] shadow-[0_0_20px_rgba(56,189,248,0.25)] transition-all transform hover:scale-[1.02] active:scale-[0.98] font-sans"
-                            title={`Télécharger ${tp.fileName || 'le fichier PDF'}`}
-                          >
-                            <Download size={15} />
-                            <span>Télécharger PDF</span>
-                            {tp.fileSize && (
-                              <span className="text-[10px] opacity-75 font-mono">({tp.fileSize})</span>
-                            )}
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </Card>
-                ) : (
-                  /* CARTE STANDARD POUR LES AUTRES TPS */
-                  <Card className="flex flex-col h-full group border-slate-800/80 hover:border-[#38bdf8]/40 bg-slate-950/40">
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-mono border ${
-                        tp.category === 'cisco' 
-                          ? 'bg-sky-500/10 text-sky-400 border-sky-500/20' 
-                          : tp.category === 'linux'
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
-                      }`}>
-                        {tp.category === 'cisco' && <Network size={12} />}
-                        {tp.category === 'linux' && <Terminal size={12} />}
-                        {tp.category === 'support' && <ShieldCheck size={12} />}
-                        {tp.categoryLabel || 'TP'}
-                      </span>
-
-                      {tp.fileSize && (
-                        <span className="text-[10px] font-mono text-slate-500">
-                          {tp.fileSize}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="mb-2">
-                      <h3 className="font-semibold text-slate-200 text-sm leading-snug group-hover:text-white transition-colors font-sans">
-                        {tp.title}
-                      </h3>
-                      {tp.subtitle && (
-                        <p className="text-xs text-slate-500 font-light mt-0.5">
-                          {tp.subtitle}
-                        </p>
-                      )}
-                    </div>
-
-                    <p className="text-slate-400 text-xs leading-relaxed mt-1 mb-4 line-clamp-3 font-light">
-                      {tp.description}
-                    </p>
-
-                    <div className="mt-auto pt-3 border-t border-slate-800/60 flex items-center justify-between gap-2">
-                      <div className="flex flex-wrap gap-1 font-mono text-[9px] text-slate-400 max-w-[60%]">
-                        {tp.technologies.slice(0, 3).map((tech) => (
-                          <span key={tech} className="bg-slate-900/60 border border-slate-800 px-1.5 py-0.5 rounded">
-                            #{tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center gap-1 shrink-0">
-                        {tp.downloadUrl && (
-                          <a
-                            href={tp.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-md transition-colors"
-                            title="Aperçu dans un nouvel onglet"
-                          >
-                            <ExternalLink size={13} />
-                          </a>
-                        )}
-
-                        {tp.downloadUrl && (
-                          <a
-                            href={tp.downloadUrl}
-                            download={tp.fileName || true}
-                            className="inline-flex items-center gap-1 text-xs font-medium text-[#38bdf8] hover:text-white bg-[#38bdf8]/10 hover:bg-[#38bdf8]/20 border border-[#38bdf8]/30 px-2.5 py-1 rounded-md transition-all font-sans"
-                            title={`Télécharger ${tp.fileName || 'PDF'}`}
-                          >
-                            <Download size={13} />
-                            <span>PDF</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </Card>
-                )}
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        <div className="space-y-14">
+          {groups.map(({ theme, items }) => {
+            const Icon = theme.icon;
+            return (
+              <div key={theme.id}>
+                <div className="flex items-center gap-3 mb-5 pb-3 border-b border-slate-800">
+                  <div className={`p-2 rounded-lg border ${theme.tone}`}><Icon size={18} /></div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-slate-100 font-sans">{theme.label}</h3>
+                    <p className="text-xs text-slate-500">{theme.description}</p>
+                  </div>
+                  <span className="text-xs text-slate-500 font-mono">{items.length} TP</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {items.map(tp => (
+                      <motion.div
+                        key={tp.id}
+                        layout
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="h-full"
+                      >
+                        <TPCard tp={tp} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </section>

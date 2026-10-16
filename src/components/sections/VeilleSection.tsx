@@ -89,10 +89,10 @@ const subjects: Subject[] = [
       },
     ],
     actus: [
-      { date: '8 juil. 2026', text: 'La France renvoyée devant la Cour de justice de l\'UE pour le retard de transposition de la directive NIS2', url: 'https://www.legiscope.com/blog/transposition-nis2-france.html' },
+      { date: '8 oct. 2026', text: 'Le Japon déclare son premier « état d\'urgence cyber » après une vague de rançongiciels visant l\'hébergeur IDC Frontier', url: 'https://www.cpomagazine.com/cyber-security/string-of-ransomware-cyber-attacks-prompts-first-cybersecurity-state-of-emergency-declaration-from-japan/' },
+      { date: '7 oct. 2026', text: 'NIS2 : la loi « Résilience » retirée de l\'ordre du jour de l\'Assemblée nationale, toujours pas votée deux ans après la date limite', url: 'https://www.usine-digitale.fr/cybersecurite/apres-deux-ans-de-retard-la-france-traine-encore-des-pieds-pour-adopter-nis-2-tandis-que-les-organisations-encaissent-les-cyberattaques.4JTKOLUKGVGELGYAKMO52JLKGY.html' },
       { date: '2 juil. 2026', text: 'Centre hospitalier de Chaumont : cyberattaque, l\'hôpital se déconnecte d\'Internet, soins maintenus', url: 'https://www.lemagit.fr/actualites/366645798/Cyberhebdo-du-10-juillet-2026-le-centre-hospitalier-de-Chaumont-echappe-au-pire' },
       { date: '26 mars 2026', text: 'Cybermalveillance.gouv.fr : plus de 504 000 demandes d\'assistance via 17Cyber en 2025, hameçonnage en tête', url: 'https://www.cybermalveillance.gouv.fr/medias/2026/03/CP-RA2026.pdf' },
-      { date: '17 mars 2026', text: 'L\'ANSSI publie le référentiel ReCyF et le guichet MonEspaceNIS2 pour préparer la mise en conformité NIS2', url: 'https://monespacenis2.cyber.gouv.fr/' },
       { date: '11 mars 2026', text: 'ANSSI — Panorama de la cybermenace 2025 : 1 366 incidents, 128 rançongiciels, exfiltrations de données +51 %', url: 'https://cert.cyber.gouv.fr/uploads/CERTFR-2026-CTI-002.pdf' },
       { date: 'Oct. 2025', text: 'ENISA — Threat Landscape 2025 : le rançongiciel représente 81 % des incidents de cybercriminalité dans l\'UE', url: 'https://www.enisa.europa.eu/publications/enisa-threat-landscape-2025' },
     ],
@@ -164,12 +164,12 @@ const subjects: Subject[] = [
       },
     ],
     actus: [
+      { date: '14 oct. 2026', text: 'L\'EBA classe l\'USDC (Circle) comme premier « jeton significatif » de l\'UE sous MiCA et en renforce la supervision', url: 'https://eba.europa.eu/publications-and-media/press-releases/eba-classifies-usdc-first-significant-e-money-token-european-union' },
       { date: '7 oct. 2026', text: 'Le botnet PoeLLM infecte plus de 3 400 serveurs d\'IA exposés (Ollama, LiteLLM) pour miner des cryptos', url: 'https://www.bleepingcomputer.com/news/security/poellm-malware-infects-exposed-ai-servers-in-cryptomining-attacks/' },
+      { date: '24 sept. 2026', text: 'Bitget : environ 387 M$ dérobés, plus gros piratage crypto de 2026, méthodes attribuées à la Corée du Nord', url: 'https://cointelegraph.com/news/bitget-388m-hack-third-party-security-vulnerability' },
       { date: '6 août 2026', text: 'La France devient le pays le plus touché par les enlèvements liés aux cryptos (30 cas à mi-2026)', url: 'https://www.chainalysis.com/blog/violent-crypto-wrench-attacks-2026/' },
       { date: '1er juil. 2026', text: 'Fin de la période transitoire MiCA : les prestataires non agréés doivent cesser leur activité', url: 'https://www.amf-france.org/en/news-publications/news-releases/crypto-assets-end-pacte-law-and-european-mica-regulation-transitional-period-establishes-new-role' },
-      { date: 'Avril 2026', text: 'Kelp DAO (≈ 293 M$) et Drift (285 M$) : les deux plus gros vols de la finance décentralisée de l\'année', url: 'https://www.pymnts.com/cryptocurrency/2026/kelp-dao-293-million-hack-largest-defi-theft-of-2026/' },
       { date: '26 mars 2026', text: 'FAUX#ELEVATE : faux CV envoyés aux RH françaises, vol d\'identifiants et minage de Monero', url: 'https://www.lemagit.fr/actualites/366640702/Cryptojacking-infostealer-une-campagne-proteiforme-contre-les-entreprises-francaises' },
-      { date: '21 fév. 2025', text: 'Piratage de Bybit : environ 1,5 Md$ volés, attribués par le FBI à la Corée du Nord', url: 'https://www.ic3.gov/PSA/2025/PSA250226' },
     ],
     demarche: (
       <>

@@ -9,6 +9,7 @@ import {
   Server,
   Monitor,
   Layers,
+  ShieldCheck,
   ChevronDown,
   LayoutGrid,
   FileText,
@@ -25,6 +26,7 @@ type YearFilter = 'all' | 1 | 2;
 // Thèmes dans l'ordre d'affichage, avec leur couleur de badge
 const themes: { id: Theme; label: string; description: string; icon: React.ElementType; tone: string }[] = [
   { id: 'reseau', label: 'Réseau / Cisco', description: 'Adressage IP, VLAN, routage et sécurisation des équipements', icon: Network, tone: 'text-sky-700 bg-sky-50 border-sky-200' },
+  { id: 'securite', label: 'Cybersécurité / Audit', description: 'Audit réseau, scan de ports et tests d\'intrusion', icon: ShieldCheck, tone: 'text-rose-700 bg-rose-50 border-rose-200' },
   { id: 'linux', label: 'Systèmes / Linux', description: 'Ligne de commande, utilisateurs, droits et scripts Bash', icon: Terminal, tone: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
   { id: 'virtualisation', label: 'Virtualisation', description: 'Hyperviseurs et machines virtuelles', icon: Server, tone: 'text-amber-700 bg-amber-50 border-amber-200' },
   { id: 'windows', label: 'Windows & Dépannage', description: 'CMD, PowerShell et diagnostic des postes', icon: Monitor, tone: 'text-indigo-700 bg-indigo-50 border-indigo-200' },

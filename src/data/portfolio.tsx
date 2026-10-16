@@ -6,7 +6,7 @@ export interface Project {
   title: string;
   subtitle?: string;
   description: string;
-  category?: 'reseau' | 'linux' | 'virtualisation' | 'windows' | 'services';
+  category?: 'reseau' | 'securite' | 'linux' | 'virtualisation' | 'windows' | 'services';
   year?: 1 | 2;
   categoryLabel?: string;
   level?: string;
@@ -168,6 +168,59 @@ export const tps: Project[] = [
     downloadUrl: getDocPath("tp/LAB 4 CISCO ROUTAGE RIP.pdf"),
     fileName: "LAB 4 CISCO ROUTAGE RIP.pdf",
     fileSize: "1.6 Mo"
+  },
+  {
+    id: 109,
+    title: "LAB ACL CISCO — Filtrer le Trafic Réseau",
+    subtitle: "ACL standard, étendues et nommées entre un siège et une agence (Packet Tracer)",
+    description: "Traduction d'une politique de filtrage du RSSI en ACL Cisco sur deux routeurs reliant un siège et une agence : blocage d'un poste, interdiction des pings vers le lien d'interconnexion, accès à un serveur limité au HTTP et liste blanche agence vers siège, validées par 14 tests et des cas de dépannage.",
+    category: 'reseau',
+    year: 2,
+    categoryLabel: 'Réseau / Cisco',
+    level: 'BTS SIO SISR — 2ᵉ année',
+    duration: '3h – 4h',
+    technologies: ["Cisco Packet Tracer", "Routeur Cisco 2911", "ACL standard", "ACL étendue", "ACL nommée", "Wildcard mask", "established"],
+    tags: ["Cisco", "Réseau", "Sécurité", "ACL", "Filtrage"],
+    type: 'tp',
+    featured: true,
+    notions: [
+      "Wildcard masks, ordre de lecture des règles et deny implicite final",
+      "ACL standard placée près de la destination (blocage d'un poste par son adresse source)",
+      "ACL étendue placée près de la source (filtrage par protocole, destination et port)",
+      "ACL nommée et numéros de séquence pour fusionner et réordonner les règles",
+      "Liste blanche agence vers siège avec established et echo-reply (filtrage sans état)",
+      "Plan de 14 tests de validation et cas de dépannage (ordre, sens in/out, wildcard)"
+    ],
+    downloadUrl: getDocPath("tp/LAB ACL CISCO.pdf"),
+    fileName: "LAB ACL CISCO.pdf",
+    fileSize: "1.1 Mo"
+  },
+  {
+    id: 110,
+    title: "LAB NMAP — Cartographie et Audit Réseau",
+    subtitle: "Découverte d'hôtes, détection de versions et exploitation encadrée sur un lab isolé",
+    description: "Audit complet d'un segment réseau isolé sous Proxmox (Debian auditeur, Ubuntu, Windows 11, Metasploitable2) : rappel du cadre légal, découverte d'hôtes, cartographie des services, détection de versions, recherche de vulnérabilités avec les scripts NSE, test de robustesse de mot de passe et techniques de discrétion observées à la capture.",
+    category: 'securite',
+    year: 2,
+    categoryLabel: 'Cybersécurité / Audit',
+    level: 'BTS SIO SISR — 2ᵉ année',
+    duration: '4h – 5h',
+    technologies: ["Nmap 7.95", "tcpdump", "Hydra", "curl", "NSE", "Metasploitable2", "Proxmox VE"],
+    tags: ["Cybersécurité", "Audit", "Nmap", "Pentest", "Réseau"],
+    type: 'tp',
+    featured: true,
+    notions: [
+      "Cadre légal (article 323-1) et déontologie : scan limité à son propre lab isolé",
+      "Découverte d'hôtes par ARP/ICMP (-sn) et impact de la résolution DNS (-n)",
+      "Détection de versions (-sV), scripts par défaut (-sC) et recoupement manuel (curl)",
+      "Recherche de vulnérabilités (--script vuln) et backdoor vsftpd 2.3.4 (CVE-2011-2523)",
+      "Comportement filtered d'un pare-feu Windows et test de mot de passe avec Hydra",
+      "Discrétion et évasion (temporisation, leurres, fragmentation) analysées à tcpdump",
+      "Synthèse d'audit : topologie, criticité des vulnérabilités et remédiations priorisées"
+    ],
+    downloadUrl: getDocPath("tp/LAB NMAP AUDIT RESEAU.pdf"),
+    fileName: "LAB NMAP AUDIT RESEAU.pdf",
+    fileSize: "1.8 Mo"
   },
   {
     id: 102,

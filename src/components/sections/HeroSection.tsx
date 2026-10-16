@@ -14,7 +14,7 @@ export const HeroSection: React.FC = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="mb-8 p-1 rounded-full bg-slate-900/50 border border-slate-800/80 relative z-10 hw-accelerated shadow-[0_0_40px_rgba(37,99,235,0.12)]"
       >
-        <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-ink flex items-center justify-center border border-white/5 grayscale hover:grayscale-0 transition-all duration-700 ease-in-out">
+        <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-ink flex items-center justify-center border border-white/5 transition-all duration-700 ease-in-out">
            <img src={getDocPath("images/profile.jpg")} alt="Alexandre Marquant" className="w-full h-full object-cover opacity-90" loading="lazy" />
         </div>
       </motion.div>

@@ -93,6 +93,83 @@ export const tps: Project[] = [
     fileSize: "905 Ko"
   },
   {
+    id: 105,
+    title: "LAB 2 CISCO — Infrastructure Réseau d'Entreprise",
+    subtitle: "VLANs, Trunk 802.1Q, routage Inter-VLAN, DHCP & SSH (agence Travel Horizon)",
+    description: "Déploiement complet du réseau d'une nouvelle agence sur Packet Tracer : un routeur et trois commutateurs, quatre VLANs métiers, liens Trunk, routage Inter-VLAN en Router-on-a-Stick, DHCP sur le routeur et administration sécurisée en SSH, puis diagnostic et extension autonome avec un VLAN RH.",
+    category: 'reseau',
+    year: 2,
+    categoryLabel: 'Réseau / Cisco',
+    level: 'BTS SIO SISR — 2ᵉ année',
+    duration: '2h – 2h30',
+    technologies: ["Cisco Packet Tracer", "VLAN", "Trunk 802.1Q", "Router-on-a-Stick", "DHCP", "SSH", "Spanning Tree PortFast"],
+    tags: ["Cisco", "Réseau", "VLAN", "DHCP", "Inter-VLAN", "SSH"],
+    type: 'tp',
+    featured: true,
+    notions: [
+      "Création des VLANs 10, 20, 30 et 99 sur trois switches et affectation des ports en mode access (PortFast)",
+      "Interconnexion des switches par liens Trunk 802.1Q",
+      "Routage Inter-VLAN en Router-on-a-Stick (sous-interfaces et encapsulation dot1Q)",
+      "Service DHCP sur le routeur Cisco IOS avec exclusion des passerelles",
+      "Sécurisation de l'administration en SSH et VLAN 99 dédié à la gestion",
+      "Diagnostic, dépannage et mission autonome d'extension (VLAN RH)"
+    ],
+    downloadUrl: getDocPath("tp/LAB 2 CISCO INFRASTRUCTURE.pdf"),
+    fileName: "LAB 2 CISCO INFRASTRUCTURE.pdf",
+    fileSize: "1.5 Mo"
+  },
+  {
+    id: 106,
+    title: "LAB 3 CISCO — Routage Statique",
+    subtitle: "Lire une table de routage et configurer des routes statiques sur routeurs Cisco",
+    description: "Mise en œuvre du routage statique sur une maquette de trois réseaux reliés par deux routeurs Cisco 1941, avec la démarche Prédire, Tester, Expliquer : configuration des interfaces, lecture de la table de routage, ajout de routes statiques, extension à un quatrième réseau et méthode de dépannage.",
+    category: 'reseau',
+    year: 2,
+    categoryLabel: 'Réseau / Cisco',
+    level: 'BTS SIO SISR — 2ᵉ année',
+    duration: '2h – 3h',
+    technologies: ["Cisco Packet Tracer", "Routeur Cisco 1941", "Switch 2960", "Routage statique", "IPv4", "show ip route"],
+    tags: ["Cisco", "Réseau", "Routage", "Routage statique"],
+    type: 'tp',
+    featured: true,
+    notions: [
+      "Rôle du commutateur (couche 2) et du routeur (couche 3), passerelle par défaut",
+      "Lecture d'une table de routage : routes C, L et S",
+      "Configuration des interfaces et des routes statiques (ip route réseau masque next-hop)",
+      "Prédiction puis analyse d'un ping aller et retour",
+      "Intégration d'un 4ᵉ réseau et méthode de dépannage d'une panne de routage"
+    ],
+    downloadUrl: getDocPath("tp/LAB 3 CISCO ROUTAGE STATIQUE.pdf"),
+    fileName: "LAB 3 CISCO ROUTAGE STATIQUE.pdf",
+    fileSize: "805 Ko"
+  },
+  {
+    id: 107,
+    title: "LAB 4 CISCO — Routage Dynamique RIP",
+    subtitle: "Configurer RIPv2, analyser les échanges entre routeurs et la convergence après panne",
+    description: "Passage du routage statique au routage dynamique avec RIP version 2 : configuration de la maquette, activation de RIP, lecture des routes apprises, observation des échanges avec debug ip rip et du split horizon, analyse de la convergence après une panne de lien, puis défi de conception sans guide.",
+    category: 'reseau',
+    year: 2,
+    categoryLabel: 'Réseau / Cisco',
+    level: 'BTS SIO SISR — 2ᵉ année',
+    duration: '2h – 3h',
+    technologies: ["Cisco Packet Tracer", "Routeur Cisco 1841", "RIPv2", "debug ip rip", "Split horizon", "Convergence"],
+    tags: ["Cisco", "Réseau", "Routage", "RIP", "Routage dynamique"],
+    type: 'tp',
+    featured: true,
+    notions: [
+      "Limites du routage statique et principe du routage dynamique",
+      "Protocole RIP : vecteur de distance et métrique en nombre de sauts",
+      "Activation de RIP (router rip, version 2, network) et lecture des routes R",
+      "Observation des échanges RIP avec debug ip rip et rôle du split horizon",
+      "Convergence du réseau après une panne de lien",
+      "Défi autonome : étendre un réseau RIP existant, puis méthode de dépannage"
+    ],
+    downloadUrl: getDocPath("tp/LAB 4 CISCO ROUTAGE RIP.pdf"),
+    fileName: "LAB 4 CISCO ROUTAGE RIP.pdf",
+    fileSize: "1.6 Mo"
+  },
+  {
     id: 102,
     title: "LAB 1 LINUX — Commandes Fondamentales & Scripting Shell",
     subtitle: "Administration système Linux Ubuntu 24.04 LTS & Script MOTD",
@@ -145,7 +222,7 @@ export const tps: Project[] = [
   },
   {
     id: 103,
-    title: "LAB PROXMOX VE — Hyperviseur Type 1 & Virtualisation Imbriquée",
+    title: "TP 1 PROXMOX VE — Hyperviseur Type 1 & Virtualisation Imbriquée",
     subtitle: "Déploiement Proxmox VE, VM Debian imbriquée, réseau vmbr0 & sécurité RBAC",
     description: "Mise en place d'une infrastructure de virtualisation imbriquée complète : configuration VT-x/AMD-V (nested virtualization), déploiement de Proxmox VE en machine virtuelle, configuration réseau en mode pont (vmbr0), gestion des dépôts No-Subscription, installation d'une VM Debian 12 avec agent QEMU et sécurisation par permissions RBAC.",
     category: 'virtualisation',
@@ -168,6 +245,31 @@ export const tps: Project[] = [
     downloadUrl: getDocPath("tp/TP PROXMOX VE.pdf"),
     fileName: "TP PROXMOX VE.pdf",
     fileSize: "1.2 Mo"
+  },
+  {
+    id: 108,
+    title: "TP 3 PROXMOX — Machine Virtuelle Windows 11",
+    subtitle: "UEFI, Secure Boot, TPM 2.0, pilotes VirtIO et agent QEMU",
+    description: "Déploiement d'une VM Windows 11 sur Proxmox VE en respectant les exigences de Microsoft : firmware UEFI (OVMF), Secure Boot et TPM 2.0 virtuel, disque et carte réseau en VirtIO avec chargement des pilotes pendant l'installation, puis installation de l'agent QEMU et validation de la VM.",
+    category: 'virtualisation',
+    year: 2,
+    categoryLabel: 'Virtualisation / Proxmox VE',
+    level: 'BTS SIO SISR — 2ᵉ année',
+    duration: '4h – 5h',
+    technologies: ["Proxmox VE", "Windows 11", "UEFI / OVMF", "TPM 2.0", "Secure Boot", "VirtIO", "QEMU Agent"],
+    tags: ["Proxmox", "Virtualisation", "Windows", "VirtIO"],
+    type: 'tp',
+    featured: true,
+    notions: [
+      "Prérequis de Windows 11 (UEFI, Secure Boot, TPM 2.0) et leur émulation dans Proxmox",
+      "Préparation des ressources : ISO Windows 11 et ISO des pilotes VirtIO",
+      "Création de la VM en mode avancé (BIOS OVMF, TPM v2.0, disque et réseau VirtIO)",
+      "Résolution du disque introuvable pendant l'installation grâce aux pilotes VirtIO",
+      "Installation et validation de l'agent QEMU, choix de licence et de sécurité"
+    ],
+    downloadUrl: getDocPath("tp/TP3 PROXMOX WINDOWS 11.pdf"),
+    fileName: "TP3 PROXMOX WINDOWS 11.pdf",
+    fileSize: "220 Ko"
   },
 
   // --- CATÉGORIE RÉSEAU / CISCO ---
